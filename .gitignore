@@ -1,0 +1,29 @@
+# Virtual Environment
+venv/
+venv-s3/
+
+# Environment Variables
+.env
+
+# Output Files
+outputs/*.html
+outputs/*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
