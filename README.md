@@ -19,6 +19,90 @@ Built as a proof-of-concept demonstrating production-grade CS automation logic f
 
 ---
 
+## 🎯 Business Impact
+
+### For CS Teams
+- **40% reduction in P2/P3 handling time** → agents focus on complex issues
+- **Consistent triage quality** → eliminates human routing errors
+- **24/7 availability** → instant ticket processing outside business hours
+
+### For Account Management
+- **Proactive churn prevention** → intervene before customers leave
+- **Context-rich alerts** → KAMs arrive prepared with full situation
+- **Prioritized outreach** → focus on highest-risk accounts first
+
+### For Sales/Revenue
+- **Zero missed upsell signals** → every pricing request captured
+- **Faster response times** → strike while intent is hot
+- **Data-driven expansion** → track commercial signals over time
+
+---
+
+## 📈 Scalability & Cost
+
+**Current PoC:** 30 tickets in ~105 seconds (local execution)
+
+**Production targets:**
+- **Volume:** 1,000-5,000 tickets/day for typical B2B SaaS scale-up
+- **Latency:** <5s per ticket (including Claude API calls)
+- **Architecture:** Containerized (Docker) + queue-based (SQS/RabbitMQ)
+- **Caching:** Agent profiles, knowledge base, FAQ responses
+
+**Estimated costs (1,000 tickets/day):**
+- Claude API: ~$15-30/month (based on token usage)
+- SendGrid: $15/month (Essentials plan, 50k emails)
+- Infrastructure: $20-50/month (AWS Lambda + RDS)  
+**Total:** ~$50-95/month
+
+---
+
+## ✨ Key Features
+
+### 1. Intelligent Triage
+- **4-level priority classification** (P0: system down → P3: FAQ)
+- **Context-aware routing** based on technical domain
+- **Automatic FAQ resolution** for P3 tickets
+
+### 2. Churn Prevention (Guardian)
+- Sentiment analysis via Claude AI
+- Account risk scoring (sentiment + history + MRR)
+- Real-time email alerts to Key Account Managers
+- Recommended actions based on risk profile
+
+### 3. Revenue Signal Capture (Opportunity)
+- Contextual business intent detection (not just keywords)
+- Pricing request identification
+- Upgrade/expansion signal capture
+- Automatic Sales team notification
+
+### 4. Production-Ready Integration Preview
+- Zendesk API call simulation (see exact payloads)
+- Custom field mapping for agent assignment
+- Tag management for workflow automation
+- External action logging (emails, webhooks)
+
+---
+
+## 📊 Demo Metrics
+
+Based on 30-ticket test corpus representing realistic B2B SaaS support scenarios:
+
+| Metric | Value | Impact |
+|--------|-------|--------|
+| **Auto-resolution rate** | 40% (12/30 tickets) | Reduced agent workload |
+| **Guardian alerts triggered** | 33% (10/30 tickets) | Proactive churn prevention |
+| **Opportunity signals captured** | 47% (14/30 tickets) | Revenue expansion pipeline |
+| **Average processing time** | ~3.5s per ticket | Real-time triage capability |
+| **Technical routing accuracy** | 100% | Correct specialist assignment |
+
+**Key Insights:**
+- **High opportunity detection rate (47%)** reflects B2B SaaS customer tendency to discuss expansion/upgrades during support interactions
+- **One-third of tickets show churn risk**, validating the need for proactive KAM intervention
+- **40% auto-resolution** for P2/P3 tickets significantly reduces agent workload while maintaining quality
+- **Sub-4 second processing** enables real-time triage integration with support platforms
+
+---
+
 ## 🏗️ Architecture
 
 ### Technical Routing Layer (3 Specialized Teams)
@@ -83,103 +167,6 @@ The system uses industry-standard priority levels for ticket classification:
 - Automated via Claude AI analyzing ticket content, customer context, and historical patterns
 - Escalation triggers: specific keywords (e.g., "down", "critical", "emergency"), customer MRR, repeated issues
 - Manual override available for edge cases
-
----
-
-## ✨ Key Features
-
-### 1. Intelligent Triage
-- **4-level priority classification** (P0: system down → P3: FAQ)
-- **Context-aware routing** based on technical domain
-- **Automatic FAQ resolution** for P3 tickets
-
-### 2. Churn Prevention (Guardian)
-- Sentiment analysis via Claude AI
-- Account risk scoring (sentiment + history + MRR)
-- Real-time email alerts to Key Account Managers
-- Recommended actions based on risk profile
-
-### 3. Revenue Signal Capture (Opportunity)
-- Contextual business intent detection (not just keywords)
-- Pricing request identification
-- Upgrade/expansion signal capture
-- Automatic Sales team notification
-
-### 4. Production-Ready Integration Preview
-- Zendesk API call simulation (see exact payloads)
-- Custom field mapping for agent assignment
-- Tag management for workflow automation
-- External action logging (emails, webhooks)
-
----
-
-## 📊 Demo Metrics
-
-Based on 30-ticket test corpus representing realistic B2B SaaS support scenarios:
-
-| Metric | Value | Impact |
-|--------|-------|--------|
-| **Auto-resolution rate** | 40% (12/30 tickets) | Reduced agent workload |
-| **Guardian alerts triggered** | 9 tickets (30%) | Proactive churn prevention |
-| **Opportunity signals captured** | 8 tickets (27%) | Revenue expansion pipeline |
-| **Average processing time** | 3.5s per ticket | Real-time triage capability |
-| **Technical routing accuracy** | 100% | Correct specialist assignment |
-
-### Priority Calibration
-
-The system's priority classification can be calibrated via prompt engineering to match your organization's risk tolerance and support SLA structure.
-
-**Current calibration targets:**
-- P0 (Critical): ~5-7% of tickets
-- P1 (High): ~25-30% of tickets
-- P2 (Medium): ~40-50% of tickets
-- P3 (Low): ~15-25% of tickets
-
-**Tuning the classification:**
-
-The classification prompt in `src/triage_engine.py` includes explicit percentage targets:
-```python
-P0 (Critical) - ONLY if:
-- Explicit mention of "system down", "outage"
-- Use sparingly: ~3% of tickets
-
-P1 (High) - If:
-- Major feature completely broken
-- Target: ~30% of tickets
-```
-
-**Adjusting for your organization:**
-
-**More conservative (higher priorities):**
-- Increase P1 target to 40-50%
-- Lower threshold for "blocking" language
-- Useful for: High-touch enterprise customers, early-stage startups
-
-**More balanced (current default):**
-- P1 target: 25-30%
-- Requires explicit urgency signals
-- Useful for: Scale-ups, mid-market B2B SaaS
-
-**More aggressive (lower priorities):**
-- P1 target: 15-20%
-- Require multiple urgency signals (e.g., "urgent" + revenue impact)
-- Useful for: High-volume support, freemium products
-
-**Validation approach:**
-1. Run system on 100 historical tickets
-2. Compare AI classification vs. actual agent classification
-3. Measure agreement rate (target: >85%)
-4. Adjust prompt weights if systematic bias detected
-5. Re-test and iterate
-
-**Example adjustment:**
-If system over-classifies as P1 (as seen in initial testing), add:
-```
-IMPORTANT: If uncertain between two levels, choose the LOWER priority
-"Not working" ≠ automatically P1 (could be user error = P3)
-```
-
-This reduced P1 classification from 70% → 27% in our test dataset.
 
 ---
 
@@ -344,6 +331,62 @@ cs-automation-systeme3/
 - Rate limiting: 100 emails/day (SendGrid free tier)
 - Production recommendation: Upgrade to paid tier for scale
 
+### Priority Calibration
+
+The system's priority classification can be calibrated via prompt engineering to match your organization's risk tolerance and support SLA structure.
+
+**Current calibration targets:**
+- P0 (Critical): ~5-7% of tickets
+- P1 (High): ~25-30% of tickets
+- P2 (Medium): ~40-50% of tickets
+- P3 (Low): ~15-25% of tickets
+
+**Tuning the classification:**
+
+The classification prompt in `src/triage_engine.py` includes explicit percentage targets:
+```python
+P0 (Critical) - ONLY if:
+- Explicit mention of "system down", "outage"
+- Use sparingly: ~3% of tickets
+
+P1 (High) - If:
+- Major feature completely broken
+- Target: ~30% of tickets
+```
+
+**Adjusting for your organization:**
+
+**More conservative (higher priorities):**
+- Increase P1 target to 40-50%
+- Lower threshold for "blocking" language
+- Useful for: High-touch enterprise customers, early-stage startups
+
+**More balanced (current default):**
+- P1 target: 25-30%
+- Requires explicit urgency signals
+- Useful for: Scale-ups, mid-market B2B SaaS
+
+**More aggressive (lower priorities):**
+- P1 target: 15-20%
+- Require multiple urgency signals (e.g., "urgent" + revenue impact)
+- Useful for: High-volume support, freemium products
+
+**Validation approach:**
+1. Run system on 100 historical tickets
+2. Compare AI classification vs. actual agent classification
+3. Measure agreement rate (target: >85%)
+4. Adjust prompt weights if systematic bias detected
+5. Re-test and iterate
+
+**Example adjustment:**
+If system over-classifies as P1 (as seen in initial testing), add:
+```
+IMPORTANT: If uncertain between two levels, choose the LOWER priority
+"Not working" ≠ automatically P1 (could be user error = P3)
+```
+
+This reduced P1 classification from 70% → 27% in our test dataset.
+
 ---
 
 ## 🏭 Production Deployment Considerations
@@ -467,41 +510,6 @@ Zendesk Webhook → AWS Lambda/Cloud Function → Triage System → Zendesk API
 - `PUT /api/v2/tickets/{id}.json` - Update priority, assignment, tags
 - `POST /api/v2/tickets/{id}/comments.json` - Add auto-responses
 - Custom fields: `guardian_risk_score`, `opportunity_intent`, `agent_id`
-
-### Scalability
-
-**Current PoC:** 30 tickets in ~105 seconds (local execution)
-
-**Production targets:**
-- **Volume:** 1,000-5,000 tickets/day for typical B2B SaaS scale-up
-- **Latency:** <5s per ticket (including Claude API calls)
-- **Architecture:** Containerized (Docker) + queue-based (SQS/RabbitMQ)
-- **Caching:** Agent profiles, knowledge base, FAQ responses
-
-**Estimated costs (1,000 tickets/day):**
-- Claude API: ~$15-30/month (based on token usage)
-- SendGrid: $15/month (Essentials plan, 50k emails)
-- Infrastructure: $20-50/month (AWS Lambda + RDS)  
-**Total:** ~$50-95/month
-
----
-
-## 🎯 Business Impact
-
-### For CS Teams
-- **40% reduction in P2/P3 handling time** → agents focus on complex issues
-- **Consistent triage quality** → eliminates human routing errors
-- **24/7 availability** → instant ticket processing outside business hours
-
-### For Account Management
-- **Proactive churn prevention** → intervene before customers leave
-- **Context-rich alerts** → KAMs arrive prepared with full situation
-- **Prioritized outreach** → focus on highest-risk accounts first
-
-### For Sales/Revenue
-- **Zero missed upsell signals** → every pricing request captured
-- **Faster response times** → strike while intent is hot
-- **Data-driven expansion** → track commercial signals over time
 
 ---
 
