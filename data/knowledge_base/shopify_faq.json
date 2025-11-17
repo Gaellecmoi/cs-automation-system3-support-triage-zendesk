@@ -1,0 +1,18 @@
+{
+    "webhook_setup": {
+      "question": "How to setup Shopify webhooks?",
+      "answer": "To setup Shopify webhooks:\n1. Log into your Shopify admin panel\n2. Go to Settings → Notifications → Webhooks\n3. Click 'Create webhook'\n4. Select the event type (e.g., 'Order creation', 'Order updated')\n5. Enter your webhook URL endpoint\n6. Format: JSON\n7. Click 'Save'\n\nNote: Webhooks require HTTPS endpoints. Test using tools like webhook.site first.\n\nCommon issues:\n- Endpoint must return 200 OK within 5 seconds\n- Verify webhook signature for security\n- Check webhook logs in Shopify admin if events not received"
+    },
+    "order_sync_troubleshooting": {
+      "question": "Orders not syncing from Shopify",
+      "answer": "If Shopify orders aren't syncing:\n\n1. Check webhook status:\n   - Shopify Admin → Settings → Notifications → Webhooks\n   - Verify webhook is 'Active' (not paused or failed)\n\n2. Review webhook delivery logs:\n   - Click on the webhook → Check recent deliveries\n   - Look for failed attempts or error codes\n\n3. Common causes:\n   - Endpoint timeout (must respond < 5 seconds)\n   - Invalid SSL certificate on your endpoint\n   - Webhook signature validation failing\n   - Rate limiting on your server\n\n4. Quick fix:\n   - Delete and recreate the webhook\n   - Manually trigger a test order\n   - Check your server logs for incoming requests\n\nIf issue persists after these steps, please provide:\n- Webhook delivery error codes from Shopify\n- Your server logs from the time period\n- Example order ID that failed to sync"
+    },
+    "inventory_sync": {
+      "question": "Inventory synchronization delays",
+      "answer": "Inventory sync delays between Shopify and our system:\n\n**Expected behavior:**\n- Real-time updates via webhooks (< 30 seconds)\n- Backup sync runs every 15 minutes\n\n**If experiencing delays > 5 minutes:**\n\n1. Check webhook health:\n   - Settings → Notifications → Webhooks → 'Inventory updates'\n   - Status should be 'Active'\n\n2. Verify product/variant IDs:\n   - Our system uses Shopify variant IDs\n   - Ensure products aren't archived or deleted\n\n3. Multi-location stores:\n   - Specify which location's inventory to track\n   - Default: primary location only\n\n4. Temporary workaround:\n   - Manual sync available in dashboard\n   - Click 'Force Inventory Sync' (updates within 2 minutes)\n\nNote: Bulk inventory changes (> 100 items) may take up to 10 minutes to fully propagate."
+    },
+    "api_rate_limits": {
+      "question": "Shopify API rate limit errors",
+      "answer": "Shopify API rate limits:\n\n**Limits:**\n- REST API: 2 requests/second (burst: 40 requests)\n- GraphQL: Based on calculated query cost (max 1000 points)\n\n**If hitting rate limits:**\n\n1. Our system implements automatic retry with exponential backoff\n2. Non-critical operations are queued and processed during off-peak hours\n3. Priority operations (order sync) bypass queue\n\n**Shopify Plus customers:**\n- Higher limits available (up to 4 req/sec)\n- Contact us to enable Plus tier settings\n\n**Action needed from you:**\n- None - rate limiting is handled automatically\n- Delays during high-volume periods (< 5 min) are normal\n- If errors persist > 30 minutes, escalate to technical support\n\nMonitor your API usage: Shopify Admin → Apps → [Our App] → API usage dashboard"
+    }
+  }

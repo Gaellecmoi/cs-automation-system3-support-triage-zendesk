@@ -1,2 +1,26 @@
-[]
-
+[
+  {
+    "id": "integrations-api-team",
+    "name": "Integrations & API Team",
+    "specialties": ["Shopify", "WooCommerce", "BigCommerce", "REST APIs", "Webhooks", "OAuth", "GraphQL"],
+    "description": "Handles platform integrations, webhook issues, authentication flows, and API errors",
+    "experience_level": "Senior (5+ years)",
+    "typical_issues": ["webhook timeout", "API rate limit", "authentication failure", "integration broken", "sync error"]
+  },
+  {
+    "id": "data-analytics-team",
+    "name": "Data & Analytics Team",
+    "specialties": ["Google Analytics", "Tracking", "Data synchronization", "Performance optimization", "Event pipelines"],
+    "description": "Manages tracking issues, event synchronization, data quality, and analytics pipeline problems",
+    "experience_level": "Senior (5+ years)",
+    "typical_issues": ["conversion tracking", "event missing", "data discrepancy", "performance slow", "analytics broken"]
+  },
+  {
+    "id": "compliance-operations-team",
+    "name": "Compliance & Operations Team",
+    "specialties": ["Stripe", "PayPal", "Payment processing", "GDPR", "Security", "Infrastructure", "Compliance"],
+    "description": "Covers payment processing, security, GDPR compliance, infrastructure, and operational workflows",
+    "experience_level": "Senior (5+ years)",
+    "typical_issues": ["payment failed", "webhook not received", "refund issue", "compliance question", "security concern"]
+  }
+]
