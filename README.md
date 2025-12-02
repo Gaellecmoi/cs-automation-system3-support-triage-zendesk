@@ -19,6 +19,42 @@ Built as a proof-of-concept demonstrating production-grade CS automation logic f
 
 ---
 
+## 📸 Screenshots
+
+### Project Structure
+![Project Structure](docs/screenshots/project-structure.jpg)
+*Well-organized Python project with modular architecture*
+
+### Dashboard Overview
+![Dashboard Overview](docs/screenshots/dashboard-overview.png)
+*Real-time metrics: 30 tickets processed, 40% auto-resolved, 10 Guardian alerts, 14 Opportunity signals*
+
+### Guardian Alerts - Churn Prevention
+![Guardian Alerts](docs/screenshots/dashboard-guardian-alerts.png)
+*High-risk tickets flagged with risk scores and automated KAM email alerts*
+
+### Opportunity Alerts - Revenue Signals
+![Opportunity Alerts](docs/screenshots/dashboard-opportunity-alerts.png)
+*Commercial intent detected with confidence scores and Sales team notifications*
+
+### All Tickets View
+![All Tickets](docs/screenshots/dashboard-all-tickets.png)
+*Complete ticket list with priority classification, team routing, and status*
+
+### Ticket Detail with Auto-Generated Draft
+![Ticket Draft Detail](docs/screenshots/ticket-draft-detail.png)
+*P2 ticket with AI-generated response using knowledge base*
+
+### Zendesk API Integration Preview
+![Zendesk API Preview](docs/screenshots/dashboard-zendesk-api.png)
+*Production-ready API calls with ticket updates, tags, and custom fields*
+
+### Processing Logs
+![Processing Logs](docs/screenshots/processing-logs.jpg)
+*Real-time ticket processing with classification, routing, and alert generation*
+
+---
+
 ## 🎯 Business Impact
 
 ### For CS Teams
